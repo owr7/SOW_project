@@ -368,21 +368,16 @@ def fix_ssp(ssp, max_depth):
         count += 1
         if l[0] > max_depth:
             break
-    #print(count)
-    #print(ssp)
     if count > 3:
         return ssp
     else:
-        #ssp = ssp[0:count-1]
         if count == 2:
             add_point_1 = ssp[1][0]/3
             add_point_2 = 2 * add_point_1
             add_ss_1 = ssp[0][1] * 2 / 3 + ssp[1][1] * 1 / 3
             add_ss_2 = ssp[0][1] * 1 / 3 + ssp[1][1] * 2 / 3
-            #print('A')
             return [ssp[0], [add_point_1, add_ss_1], [add_point_2, add_ss_2], ssp[1]]
         elif count == 3:
-            #print('B')
             add_point_1 = ssp[1][0]/2
             add_ss_1 = ssp[0][1] / 2 + ssp[1][1] / 2
             return [ssp[0], [add_point_1, add_ss_1], ssp[1], ssp[2]]
@@ -395,8 +390,6 @@ def call_bellhop(bathy, ssp, res, x_t: int, y_t: int, z_t: int, x_r: int, y_r: i
                  ground_type, surface_type, limits, freq):
 
     new_bathy = create_spcifier_bathy(x_t, y_t, x_r, y_r, bathy, res, limits)
-    #print(new_bathy)
-    #print(x_t,x_r,y_t,y_r,z_t,z_r)
     if z_t == 0:
         z_t = 0.1
     if z_r == 0:
@@ -419,36 +412,18 @@ def call_bellhop(bathy, ssp, res, x_t: int, y_t: int, z_t: int, x_r: int, y_r: i
                           bottom_density=ground_type[1],
                           bottom_roughness=ground_type[2])
 
-    #env['tx_depth'] = z_t
-    #env['rx_depth'] = z_r
-    env['rx_range'] = new_bathy[new_bathy.__len__()-1][0] - 0.001# round(math.sqrt((x_r - x_t) ** 2 + (y_r - y_t) ** 2)-0.0001, 2)
-    #env['bottom_absorption'] = ground_type[0]
-    #env['bottom_density'] = ground_type[1]
-    #env['bottom_roughness'] = ground_type[2]
-    #env['frequency'] = 25000
-    #print(env)
-    #print(env)
+
+    env['rx_range'] = new_bathy[new_bathy.__len__()-1][0] - 0.001
     if surface_type == 'waves':
         env['surface'] = np.array([[r, 0.5+0.5*np.sin(2*np.pi*0.005*r)] for r in np.linspace(0, env['rx_range']+1
                                                                                              , 1001)])
-    #if env['depth'][0][1] < env['tx_depth']:
-    #    env['tx_depth'] = env['depth'][0][1] - 0.01
-    #if env['depth'][env['depth'].__len__()-1][1] < env['rx_depth']:
-    #    env['rx_depth'] = env['depth'][env['depth'].__len__()-1][1] - 0.01
-    #print(env)
     flg = False
     try:
         arrivals = pm.compute_arrivals(env)
     except Exception:
-        #except 'No objects to concatenate':
         print('******The trassmission not arrived******')
-        #f_error = open('error','w')
         flg = True
         pass
-    """rays = pm.compute_eigenrays(env)
-    if x_t == 20 and x_r == 150 and y_t == 23:
-        pm.plot_rays(rays, env=env, width=900)
-        pm.plot_arrivals(arrivals, width=900)"""
     if flg:
         return 'not arrived', -1
     ir = pm.arrivals_to_impulse_response(arrivals, fs=int(freq))
