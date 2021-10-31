@@ -64,22 +64,6 @@ def generate_str_file(filename, wind_vel, wind_dir, dragco, waves, friction, sal
     print('\tiwave =', waves, file=str_file)  # wave={0,1}
     print('$end\n', file=str_file)
 
-    #flow
-    """if nodes is not None:
-        print('$bound1', file=str_file)
-        print('\tkbound =', end=' ', file=str_file)
-        for i, node in enumerate(nodes):
-            if i % 5 == 0:
-                print(node, file=str_file)
-            else:
-                print(node, end=' ', file=str_file)
-        print('', end='\n')
-        print('\tibtyp = 3', file=str_file)  # flow in m^3/s
-        print('\tboundn = "flow_file"', file=str_file)
-
-        print('$end\n', file=str_file)
-    """
-    # wind
     # wind
     if wind_vel != '0':
         if wind_vel != '-1':
@@ -148,9 +132,6 @@ if __name__ == '__main__':
 
     flg = 0
     if wind_file != '0':
-        #flow_file = open('flow_file', 'w')
-        #print('0', flow, file=flow_file)
-        #flow_file.close()
         flg = 1
     
     nodes_list = prepare_bathy_coordinates()
