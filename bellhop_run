@@ -1,0 +1,20 @@
+#!/bin/bash
+echo $1' 	! bathymetry file name' > INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo $2' 	! ssp file name' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo $3' 	! surface type - flat/waves' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo $4 $5 $6' 	! ground type:bottom absorption, density, roughness' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo $7 $8' 	! nodes initail position' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo $9' 	! schedule matrix file name' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo ${10}' 	! frequency' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo ${11}' 	! delta_t' >> INPUT/bellhop_input_file
+echo '>' >> INPUT/bellhop_input_file
+echo ${12}' 	! Total time of simulation' >> INPUT/bellhop_input_file
+echo "create_input_file WORKED" > check
+python3 bellhop_part.py

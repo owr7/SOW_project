@@ -1,0 +1,8 @@
+#!/bin/bash
+while read line; do
+	echo $line|cut -d" " -f1 > a
+	node=$(head -n 1 a)
+	shyelab -node $node scenario.hydro.shy
+	python3 create_pre_matrix.py $line >> pre_matrix
+	rm *3d* *2d* *.fem
+done < $1
